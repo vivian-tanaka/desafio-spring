@@ -4,7 +4,9 @@ import com.melidh.desafiospring.domain.User;
 import com.melidh.desafiospring.domain.dto.BaseUserDTO;
 import com.melidh.desafiospring.domain.dto.UserFollowCountDTO;
 import com.melidh.desafiospring.domain.dto.UserFollowersDTO;
+import com.melidh.desafiospring.domain.dto.UserFollowingDTO;
 import com.melidh.desafiospring.repositories.UserRepository;
+import com.melidh.desafiospring.services.exceptions.ActionNotAllowedException;
 import com.melidh.desafiospring.services.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,8 @@ public class UserService {
     public void followSeller(Integer userId, Integer userIdToFollow) {
         User customer = findById(userId);
         User seller = findById(userIdToFollow);
+
+        if(userId == userIdToFollow) throw new ActionNotAllowedException("User cannot follow self");
 
         customer.getFollowing().add(seller);
         seller.getFollowers().add(customer);
@@ -57,5 +61,15 @@ public class UserService {
         userFollowers.getFollowers().addAll(baseUsers);
 
         return userFollowers;
+    }
+
+    public UserFollowingDTO getUserAndFollowed(Integer id) {
+        User user = findById(id);
+        UserFollowingDTO userFollowed = new UserFollowingDTO(user);
+        List<BaseUserDTO> baseUsers = user.getFollowing().stream().map(u -> new BaseUserDTO(u)).collect(Collectors.toList());
+
+        userFollowed.getFollowing().addAll(baseUsers);
+
+        return userFollowed;
     }
 }

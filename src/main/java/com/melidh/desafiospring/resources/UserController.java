@@ -4,6 +4,7 @@ import com.melidh.desafiospring.domain.User;
 import com.melidh.desafiospring.domain.dto.UserFollowCountDTO;
 import com.melidh.desafiospring.domain.dto.BaseUserDTO;
 import com.melidh.desafiospring.domain.dto.UserFollowersDTO;
+import com.melidh.desafiospring.domain.dto.UserFollowingDTO;
 import com.melidh.desafiospring.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -55,6 +56,13 @@ public class UserController {
         UserFollowersDTO userFollowersDTO = userService.getUserAndFollowers(id);
 
         return ResponseEntity.ok().body(userFollowersDTO);
+    }
+
+    @GetMapping("/{id}/following/list")
+    public ResponseEntity<UserFollowingDTO> getFollowedList(@PathVariable Integer id){
+        UserFollowingDTO userFollowingDTO = userService.getUserAndFollowed(id);
+
+        return ResponseEntity.ok().body(userFollowingDTO);
     }
 
 }
