@@ -1,9 +1,7 @@
 package com.melidh.desafiospring;
 
-import com.melidh.desafiospring.domain.Customer;
-import com.melidh.desafiospring.domain.Seller;
-import com.melidh.desafiospring.repositories.CustomerRepository;
-import com.melidh.desafiospring.repositories.SellerRepository;
+import com.melidh.desafiospring.domain.User;
+import com.melidh.desafiospring.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -19,29 +17,22 @@ public class DesafioSpringApplication implements CommandLineRunner {
     }
 
     @Autowired
-    private CustomerRepository customerRepository;
-
-    @Autowired
-    private SellerRepository sellerRepository;
+    private UserRepository userRepository;
 
     @Override
     public void run(String... args) throws Exception {
 
         System.out.println("Initializing db");
 
-        Customer c1 = new Customer(null, "Joao");
-        Customer c2 = new Customer(null, "Julia");
-        Customer c3 = new Customer(null, "Jose");
+        User c1 = new User(null, "Joao");
+        User c2 = new User(null, "Julia");
+        User c3 = new User(null, "Jose");
 
-        Seller s1 = new Seller(null,"Mariano");
-        Seller s2 = new Seller(null,"Mafaldaa");
-        Seller s3 = new Seller(null,"Marcio");
+        User s1 = new User(null,"Mariano");
+        User s2 = new  User(null,"Mafaldaa");
+        User s3 = new User(null,"Marcio");
 
-        s1.getFollowers().add(c1);
-        c1.getFollowing().add(s1);
-
-        customerRepository.saveAll(Arrays.asList(c1,c2,c3));
-        sellerRepository.saveAll(Arrays.asList(s1,s2,s3));
+        userRepository.saveAll(Arrays.asList(c1,c2,c3,s1,s2,s3));
     }
 
 }

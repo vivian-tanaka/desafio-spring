@@ -3,7 +3,6 @@ package com.melidh.desafiospring.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -14,8 +13,8 @@ public class Post {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "seller_id")
-    private Seller seller;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @JsonFormat(pattern="dd/MM/yyyy HH:mm")
     private Date date;
@@ -26,9 +25,9 @@ public class Post {
 
     public Post(){}
 
-    public Post(Integer id, Seller seller, Date date, Product product) {
+    public Post(Integer id, User user, Date date, Product product) {
         this.id = id;
-        this.seller = seller;
+        this.user = user;
         this.date = date;
         this.product = product;
     }
