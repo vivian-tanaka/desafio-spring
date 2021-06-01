@@ -1,12 +1,12 @@
 package com.melidh.desafiospring.domain;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
-@Data
 public class Post {
 
     @Id
@@ -17,7 +17,8 @@ public class Post {
     @JoinColumn(name = "seller_id")
     private Seller seller;
 
-    private LocalDate date;
+    @JsonFormat(pattern="dd/MM/yyyy HH:mm")
+    private Date date;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
@@ -25,10 +26,11 @@ public class Post {
 
     public Post(){}
 
-    public Post(Integer id, Seller seller, LocalDate date, Product product) {
+    public Post(Integer id, Seller seller, Date date, Product product) {
         this.id = id;
         this.seller = seller;
         this.date = date;
         this.product = product;
     }
+
 }

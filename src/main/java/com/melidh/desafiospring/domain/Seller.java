@@ -1,15 +1,12 @@
 package com.melidh.desafiospring.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
-@Data
 public class Seller{
 
     @Id
@@ -18,6 +15,7 @@ public class Seller{
 
     private String name;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "following")
     private Set<Customer> followers = new HashSet<>();
 
@@ -29,5 +27,50 @@ public class Seller{
     public Seller(Integer id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Set<Customer> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(Set<Customer> followers) {
+        this.followers = followers;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Seller seller = (Seller) o;
+        return Objects.equals(getId(), seller.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }
