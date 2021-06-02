@@ -1,7 +1,6 @@
 package com.melidh.desafiospring.domain;
 
-import com.melidh.desafiospring.domain.dto.PostRequestDTO;
-import lombok.Data;
+import com.melidh.desafiospring.domain.dto.PostDTO;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -39,8 +38,8 @@ public class Product {
         this.category = category;
     }
 
-    public Product(PostRequestDTO post){
-        this.name = post.getDetail().getName();
+    public Product(PostDTO post){
+        this.name = post.getDetail().getProduct_name();
         this.type = post.getDetail().getType();
         this.brand = post.getDetail().getBrand();
         this.color = post.getDetail().getColor();

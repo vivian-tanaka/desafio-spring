@@ -1,15 +1,26 @@
 package com.melidh.desafiospring.domain.dto;
 
+import com.melidh.desafiospring.domain.Product;
+
 public class Detail {
 
     private Integer product_id;
-    private String name;
+    private String product_name;
     private String type;
     private String brand;
     private String color;
     private String notes;
 
     public Detail(){}
+
+    public Detail(Product product){
+        this.product_id = product.getId();
+        this.product_name = product.getName();
+        this.type = product.getType();
+        this.brand = product.getBrand();
+        this.color = product.getColor();
+        this.notes = product.getNotes();
+    }
 
     public Integer getProduct_id() {
         return product_id;
@@ -19,12 +30,12 @@ public class Detail {
         this.product_id = product_id;
     }
 
-    public String getName() {
-        return name;
+    public String getProduct_name() {
+        return product_name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProduct_name(String product_name) {
+        this.product_name = product_name;
     }
 
     public String getType() {

@@ -1,9 +1,64 @@
 package com.melidh.desafiospring.services;
 
+import com.melidh.desafiospring.domain.Post;
+import com.melidh.desafiospring.domain.Product;
+import com.melidh.desafiospring.domain.User;
+import com.melidh.desafiospring.domain.dto.PostDTO;
+import com.melidh.desafiospring.domain.dto.UserPostsDTO;
+import com.melidh.desafiospring.repositories.ProductRepository;
+import com.melidh.desafiospring.services.exceptions.DateParseException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
 
+    @Autowired
+    private ProductRepository productRepository;
 
+    @Autowired
+    private PostService postService;
+
+    @Autowired
+    private UserService userService;
+
+    public void addPost(PostDTO postDTO) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+
+        Product product = new Product(postDTO);
+        Post post = new Post();
+
+        try {
+            User user = userService.findById(postDTO.getUser_id());
+
+            post.setDate(formatter.parse(postDTO.getDate()));
+            post.setProduct(product);
+            post.setUser(user);
+
+            productRepository.save(product);
+            postService.save(post);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            throw new DateParseException("Invalid date input. Check if date format is correct.");
+        }
+
+    }
+
+    public UserPostsDTO findAllRecentPosts(Integer userId) {
+        User user = userService.findById(userId);
+        List<Integer> following_ids = user.getFollowing().stream().map(u -> u.getId()).collect(Collectors.toList());
+        List<Post> posts = postService.findRecentPosts(following_ids);
+
+        UserPostsDTO userPostsDTO = new UserPostsDTO();
+        userPostsDTO.setUserId(userId);
+        userPostsDTO.getPosts().addAll(posts.stream().map(p -> new PostDTO(p)).collect(Collectors.toList()));
+
+        return userPostsDTO;
+    }
 }

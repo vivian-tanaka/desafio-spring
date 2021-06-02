@@ -1,7 +1,6 @@
 package com.melidh.desafiospring.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.melidh.desafiospring.domain.dto.PostRequestDTO;
 
 import javax.persistence.*;
 import java.util.Date;

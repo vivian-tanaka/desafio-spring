@@ -1,5 +1,6 @@
 package com.melidh.desafiospring.services;
 
+import com.melidh.desafiospring.domain.Post;
 import com.melidh.desafiospring.domain.User;
 import com.melidh.desafiospring.domain.dto.BaseUserDTO;
 import com.melidh.desafiospring.domain.dto.UserFollowCountDTO;
@@ -30,16 +31,16 @@ public class UserService {
     }
 
     public void followSeller(Integer userId, Integer userIdToFollow) {
-        User customer = findById(userId);
-        User seller = findById(userIdToFollow);
 
         if(userId == userIdToFollow) throw new ActionNotAllowedException("User cannot follow self");
+
+        User customer = findById(userId);
+        User seller = findById(userIdToFollow);
 
         customer.getFollowing().add(seller);
         seller.getFollowers().add(customer);
 
         userRepository.save(customer);
-
     }
 
     public List<User> findAll() {
@@ -72,4 +73,5 @@ public class UserService {
 
         return userFollowed;
     }
+
 }

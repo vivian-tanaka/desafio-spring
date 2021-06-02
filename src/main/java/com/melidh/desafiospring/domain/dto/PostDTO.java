@@ -1,14 +1,29 @@
 package com.melidh.desafiospring.domain.dto;
 
-public class PostRequestDTO {
+import com.melidh.desafiospring.domain.Post;
+
+import java.text.SimpleDateFormat;
+
+public class PostDTO {
 
     private Integer user_id;
+    private Integer post_id;
     private String date;
     private Detail detail;
     private Integer category;
     private Double price;
 
-    public PostRequestDTO(){}
+    public PostDTO(){}
+
+    public PostDTO(Post post){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        this.user_id = post.getUser().getId();
+        this.post_id = post.getId();
+        this.date = sdf.format(post.getDate());
+        this.detail = new Detail(post.getProduct());
+        this.category = post.getProduct().getCategory();
+        this.price = post.getProduct().getPrice();
+    }
 
     public Integer getUser_id() {
         return user_id;
@@ -16,6 +31,14 @@ public class PostRequestDTO {
 
     public void setUser_id(Integer user_id) {
         this.user_id = user_id;
+    }
+
+    public Integer getPost_id() {
+        return post_id;
+    }
+
+    public void setPost_id(Integer post_id) {
+        this.post_id = post_id;
     }
 
     public String getDate() {
