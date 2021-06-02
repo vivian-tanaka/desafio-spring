@@ -54,7 +54,7 @@ public class UserService {
         return userFollowCountDTO;
     }
 
-    public UserFollowersDTO getUserAndFollowers(Integer id) {
+    public UserFollowersDTO getUserAndFollowers(Integer id, String orderBy) {
         User user = findById(id);
         UserFollowersDTO userFollowers = new UserFollowersDTO(user);
         List<BaseUserDTO> baseUsers = user.getFollowers().stream().map(u -> new BaseUserDTO(u)).collect(Collectors.toList());
@@ -74,4 +74,13 @@ public class UserService {
         return userFollowed;
     }
 
+    public void unfollow(Integer userId, Integer userIdToUnfollow) {
+        User user = findById(userId);
+        User seller = findById(userIdToUnfollow);
+
+        user.getFollowing().remove(seller);
+        seller.getFollowers().remove(user);
+
+        userRepository.save(user);
+    }
 }
