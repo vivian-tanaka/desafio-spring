@@ -5,7 +5,8 @@ import java.util.List;
 
 public class UserPostsDTO {
 
-    private Integer userId;
+   private Integer userId;
+   private String userName;
     private List<PostDTO> posts = new ArrayList<>();
 
     public Integer getUserId() {
@@ -22,5 +23,13 @@ public class UserPostsDTO {
 
     public void setPosts(List<PostDTO> posts) {
         this.posts = posts;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

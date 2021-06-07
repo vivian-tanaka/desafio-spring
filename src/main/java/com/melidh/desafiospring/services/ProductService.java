@@ -5,6 +5,7 @@ import com.melidh.desafiospring.domain.Product;
 import com.melidh.desafiospring.domain.User;
 import com.melidh.desafiospring.domain.dto.PostDTO;
 import com.melidh.desafiospring.domain.dto.UserPostsDTO;
+import com.melidh.desafiospring.domain.dto.UserPromoCountDTO;
 import com.melidh.desafiospring.repositories.ProductRepository;
 import com.melidh.desafiospring.services.exceptions.DateParseException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +63,7 @@ public class ProductService {
 
         UserPostsDTO userPostsDTO = new UserPostsDTO();
         userPostsDTO.setUserId(userId);
+        userPostsDTO.setUserName(user.getUsername());
         userPostsDTO.getPosts().addAll(posts.stream().map(p -> new PostDTO(p)).collect(Collectors.toList()));
 
         return userPostsDTO;
@@ -75,5 +77,23 @@ public class ProductService {
         } else {
             Collections.sort(posts, Comparator.comparing(Post::getDate).reversed());
         }
+    }
+
+    public UserPromoCountDTO getUserPromoCount(Integer userId) {
+        UserPromoCountDTO userPromoCount = new UserPromoCountDTO(userService.findById(userId));
+
+        return userPromoCount;
+    }
+
+    public UserPostsDTO findAllUserPromoPosts(Integer userId) {
+        User user = userService.findById(userId);
+        List<Post> posts = user.getPosts().stream().filter(post -> post.isPromo()).collect(Collectors.toList());
+
+        UserPostsDTO userPostsDTO = new UserPostsDTO();
+        userPostsDTO.setUserId(userId);
+        userPostsDTO.setUserName(user.getUsername());
+        userPostsDTO.getPosts().addAll(posts.stream().map(p -> new PostDTO(p)).collect(Collectors.toList()));
+
+        return userPostsDTO;
     }
 }
