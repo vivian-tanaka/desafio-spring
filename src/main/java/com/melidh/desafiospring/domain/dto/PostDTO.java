@@ -5,15 +5,25 @@ import com.melidh.desafiospring.domain.Post;
 import com.melidh.desafiospring.resources.filters.DiscountFilter;
 import com.melidh.desafiospring.resources.filters.PromoFilter;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.text.SimpleDateFormat;
 
 public class PostDTO {
 
+    @NotNull
     private Integer userId;
     private Integer id_post;
+
+    @NotNull
     private String date;
     private Detail detail;
+
+    @NotNull
     private Integer category;
+
+    @NotNull
+    @Positive
     private Double price;
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = PromoFilter.class)

@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/products")
 public class ProductController {
@@ -16,7 +18,7 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping("/newpost")
-    public ResponseEntity<Void> postNewProduct(@RequestBody PostDTO postDTO) {
+    public ResponseEntity<Void> postNewProduct(@Valid @RequestBody PostDTO postDTO) {
         System.out.println(postDTO);
         productService.addPost(postDTO);
 
