@@ -1,6 +1,9 @@
 package com.melidh.desafiospring.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.melidh.desafiospring.domain.Post;
+import com.melidh.desafiospring.resources.filters.DiscountFilter;
+import com.melidh.desafiospring.resources.filters.PromoFilter;
 
 import java.text.SimpleDateFormat;
 
@@ -12,8 +15,12 @@ public class PostDTO {
     private Detail detail;
     private Integer category;
     private Double price;
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = PromoFilter.class)
     private boolean hasPromo = false;
-    private Double discount;
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = DiscountFilter.class)
+    private Double discount = 0.0;
 
     public PostDTO(){}
 
@@ -77,7 +84,7 @@ public class PostDTO {
         this.price = price;
     }
 
-    public boolean isPromo() {
+    public boolean isHasPromo() {
         return hasPromo;
     }
 

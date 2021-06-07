@@ -16,6 +16,7 @@ public class ProductController {
 
     @PostMapping("/newpost")
     public ResponseEntity<Void> postNewProduct(@RequestBody PostDTO postDTO) {
+        System.out.println(postDTO);
         productService.addPost(postDTO);
 
         return ResponseEntity.ok().build();

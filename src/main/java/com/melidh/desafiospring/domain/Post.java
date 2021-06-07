@@ -23,8 +23,8 @@ public class Post {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    private boolean promo = false;
-    private Double discount;
+    private Boolean promo = false;
+    private Double discount = 0.0;
 
     public Post(){}
 

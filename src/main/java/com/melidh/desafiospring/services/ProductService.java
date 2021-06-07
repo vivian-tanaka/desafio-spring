@@ -41,6 +41,8 @@ public class ProductService {
             post.setDate(formatter.parse(postDTO.getDate()));
             post.setProduct(product);
             post.setUser(user);
+            post.setPromo(postDTO.isHasPromo());
+            post.setDiscount(postDTO.getDiscount());
 
             productRepository.save(product);
             postService.save(post);
