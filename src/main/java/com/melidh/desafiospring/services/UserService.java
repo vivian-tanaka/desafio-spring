@@ -1,17 +1,18 @@
 package com.melidh.desafiospring.services;
 
-import com.melidh.desafiospring.domain.Post;
 import com.melidh.desafiospring.domain.User;
 import com.melidh.desafiospring.domain.dto.BaseUserDTO;
 import com.melidh.desafiospring.domain.dto.UserFollowCountDTO;
+import com.melidh.desafiospring.domain.dto.UserFollowedDTO;
 import com.melidh.desafiospring.domain.dto.UserFollowersDTO;
-import com.melidh.desafiospring.domain.dto.UserFollowingDTO;
 import com.melidh.desafiospring.repositories.UserRepository;
 import com.melidh.desafiospring.services.exceptions.ActionNotAllowedException;
 import com.melidh.desafiospring.services.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,14 +26,16 @@ public class UserService {
     public User findById(Integer id) {
         Optional<User> userOptional = userRepository.findById(id);
 
-        if(!userOptional.isPresent()) throw new UserNotFoundException("User not found. Id: "+id);
+        if (!userOptional.isPresent()) throw new UserNotFoundException("User not found. Id: " + id);
+
+        BaseUserDTO baseUserDTO = new BaseUserDTO(userOptional.get());
 
         return userOptional.get();
     }
 
     public void followSeller(Integer userId, Integer userIdToFollow) {
 
-        if(userId == userIdToFollow) throw new ActionNotAllowedException("User cannot follow self");
+        if (userId == userIdToFollow) throw new ActionNotAllowedException("User cannot follow self");
 
         User customer = findById(userId);
         User seller = findById(userIdToFollow);
@@ -43,8 +46,10 @@ public class UserService {
         userRepository.save(customer);
     }
 
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<BaseUserDTO> findAll() {
+        List<User> customers = userRepository.findAll();
+        List<BaseUserDTO> baseUserDTOList = customers.stream().map(user -> new BaseUserDTO(user)).collect(Collectors.toList());
+        return baseUserDTOList;
     }
 
     public UserFollowCountDTO getFollowersCount(Integer id) {
@@ -57,19 +62,23 @@ public class UserService {
     public UserFollowersDTO getUserAndFollowers(Integer id, String orderBy) {
         User user = findById(id);
         UserFollowersDTO userFollowers = new UserFollowersDTO(user);
-        List<BaseUserDTO> baseUsers = user.getFollowers().stream().map(u -> new BaseUserDTO(u)).collect(Collectors.toList());
 
+        List<BaseUserDTO> baseUsers = user.getFollowers().stream().map(u -> new BaseUserDTO(u)).collect(Collectors.toList());
         userFollowers.getFollowers().addAll(baseUsers);
+
+        sortByName(userFollowers.getFollowers(),orderBy);
 
         return userFollowers;
     }
 
-    public UserFollowingDTO getUserAndFollowed(Integer id) {
+    public UserFollowedDTO getUserAndFollowed(Integer id, String orderBy) {
         User user = findById(id);
-        UserFollowingDTO userFollowed = new UserFollowingDTO(user);
-        List<BaseUserDTO> baseUsers = user.getFollowing().stream().map(u -> new BaseUserDTO(u)).collect(Collectors.toList());
+        UserFollowedDTO userFollowed = new UserFollowedDTO(user);
 
-        userFollowed.getFollowing().addAll(baseUsers);
+        List<BaseUserDTO> baseUsers = user.getFollowing().stream().map(u -> new BaseUserDTO(u)).collect(Collectors.toList());
+        userFollowed.getFollowed().addAll(baseUsers);
+
+        sortByName(userFollowed.getFollowed(),orderBy);
 
         return userFollowed;
     }
@@ -83,4 +92,15 @@ public class UserService {
 
         userRepository.save(user);
     }
+
+    private void sortByName(List<BaseUserDTO> users, String orderBy) {
+        String [] order = orderBy.split("_");
+
+        if (order[1].equals("asc")) {
+            Collections.sort(users, Comparator.comparing(BaseUserDTO::getUserName));
+        } else {
+            Collections.sort(users, Comparator.comparing(BaseUserDTO::getUserName).reversed());
+        }
+    }
+
 }

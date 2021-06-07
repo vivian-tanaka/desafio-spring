@@ -39,7 +39,7 @@ public class Product {
     }
 
     public Product(PostDTO post){
-        this.name = post.getDetail().getProduct_name();
+        this.name = post.getDetail().getProductName();
         this.type = post.getDetail().getType();
         this.brand = post.getDetail().getBrand();
         this.color = post.getDetail().getColor();

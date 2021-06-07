@@ -15,15 +15,17 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping("/newpost")
-    public ResponseEntity<Void> postNewProduct(@RequestBody PostDTO postDTO){
+    public ResponseEntity<Void> postNewProduct(@RequestBody PostDTO postDTO) {
         productService.addPost(postDTO);
 
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/followed/{userId}/list")
-    public ResponseEntity<UserPostsDTO> getRecentPosts(@PathVariable Integer userId){
-        UserPostsDTO userPostsDTO = productService.findAllRecentPosts(userId);
+    public ResponseEntity<UserPostsDTO> getRecentPosts(
+            @PathVariable Integer userId,
+            @RequestParam(name = "order", defaultValue = "date_asc") String orderBy) {
+        UserPostsDTO userPostsDTO = productService.findAllRecentPosts(userId, orderBy);
 
         return ResponseEntity.ok().body(userPostsDTO);
     }

@@ -27,12 +27,13 @@ public class DesafioSpringApplication implements CommandLineRunner {
         User c1 = new User(null, "Joao");
         User c2 = new User(null, "Julia");
         User c3 = new User(null, "Jose");
+        User c4 = new User(null, "Ana");
 
         User s1 = new User(null,"Mariano");
         User s2 = new  User(null,"Mafaldaa");
         User s3 = new User(null,"Marcio");
 
-        userRepository.saveAll(Arrays.asList(c1,c2,c3,s1,s2,s3));
+        userRepository.saveAll(Arrays.asList(c1,c2,c3,c4,s1,s2,s3));
     }
 
 }

@@ -23,13 +23,18 @@ public class Post {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    private boolean promo = false;
+    private Double discount;
+
     public Post(){}
 
-    public Post(Integer id, User user, Date date, Product product) {
+    public Post(Integer id, User user, Date date, Product product, boolean promo, Double discount) {
         this.id = id;
         this.user = user;
         this.date = date;
         this.product = product;
+        this.promo = promo;
+        this.discount = discount;
     }
 
     public Integer getId() {
@@ -62,5 +67,21 @@ public class Post {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public boolean isPromo() {
+        return promo;
+    }
+
+    public void setPromo(boolean promo) {
+        this.promo = promo;
+    }
+
+    public Double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Double discount) {
+        this.discount = discount;
     }
 }

@@ -6,39 +6,43 @@ import java.text.SimpleDateFormat;
 
 public class PostDTO {
 
-    private Integer user_id;
-    private Integer post_id;
+    private Integer userId;
+    private Integer id_post;
     private String date;
     private Detail detail;
     private Integer category;
     private Double price;
+    private boolean hasPromo = false;
+    private Double discount;
 
     public PostDTO(){}
 
     public PostDTO(Post post){
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        this.user_id = post.getUser().getId();
-        this.post_id = post.getId();
+        this.userId = post.getUser().getId();
+        this.id_post = post.getId();
         this.date = sdf.format(post.getDate());
         this.detail = new Detail(post.getProduct());
         this.category = post.getProduct().getCategory();
         this.price = post.getProduct().getPrice();
+        this.hasPromo = post.isPromo();
+        this.discount = post.getDiscount();
     }
 
-    public Integer getUser_id() {
-        return user_id;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public Integer getPost_id() {
-        return post_id;
+    public Integer getId_post() {
+        return id_post;
     }
 
-    public void setPost_id(Integer post_id) {
-        this.post_id = post_id;
+    public void setId_post(Integer id_post) {
+        this.id_post = id_post;
     }
 
     public String getDate() {
@@ -71,5 +75,21 @@ public class PostDTO {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public boolean isPromo() {
+        return hasPromo;
+    }
+
+    public void setHasPromo(boolean hasPromo) {
+        this.hasPromo = hasPromo;
+    }
+
+    public Double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Double discount) {
+        this.discount = discount;
     }
 }

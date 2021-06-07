@@ -1,17 +1,16 @@
 package com.melidh.desafiospring.resources;
 
 import com.melidh.desafiospring.domain.User;
-import com.melidh.desafiospring.domain.dto.UserFollowCountDTO;
 import com.melidh.desafiospring.domain.dto.BaseUserDTO;
+import com.melidh.desafiospring.domain.dto.UserFollowCountDTO;
+import com.melidh.desafiospring.domain.dto.UserFollowedDTO;
 import com.melidh.desafiospring.domain.dto.UserFollowersDTO;
-import com.melidh.desafiospring.domain.dto.UserFollowingDTO;
 import com.melidh.desafiospring.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users")
@@ -22,8 +21,7 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<BaseUserDTO>> findAll(){
-        List<User> customers = userService.findAll();
-        List<BaseUserDTO> baseUserDTOList = customers.stream().map(user -> new BaseUserDTO(user)).collect(Collectors.toList());
+        List<BaseUserDTO> baseUserDTOList = userService.findAll();
 
         return ResponseEntity.ok().body(baseUserDTOList);
     }
@@ -38,7 +36,6 @@ public class UserController {
 
     @PostMapping("/{userId}/follow/{userIdToFollow}")
     public ResponseEntity<Void> addFollower(@PathVariable Integer userId, @PathVariable Integer userIdToFollow){
-
         userService.followSeller(userId,userIdToFollow);
 
         return ResponseEntity.ok().build();
@@ -61,14 +58,14 @@ public class UserController {
         return ResponseEntity.ok().body(userFollowersDTO);
     }
 
-    @GetMapping("/{id}/following/list")
-    public ResponseEntity<UserFollowingDTO> getFollowedList(
+    @GetMapping("/{id}/followed/list")
+    public ResponseEntity<UserFollowedDTO> getFollowedList(
             @PathVariable Integer id,
             @RequestParam(name="order", defaultValue = "name_asc") String orderBy
     ){
-        UserFollowingDTO userFollowingDTO = userService.getUserAndFollowed(id);
+        UserFollowedDTO userFollowedDTO = userService.getUserAndFollowed(id,orderBy);
 
-        return ResponseEntity.ok().body(userFollowingDTO);
+        return ResponseEntity.ok().body(userFollowedDTO);
     }
 
     @PostMapping("/{userId}/unfollow/{userIdToUnfollow}")

@@ -5,7 +5,7 @@ import com.melidh.desafiospring.domain.Product;
 public class Detail {
 
     private Integer product_id;
-    private String product_name;
+    private String productName;
     private String type;
     private String brand;
     private String color;
@@ -15,7 +15,7 @@ public class Detail {
 
     public Detail(Product product){
         this.product_id = product.getId();
-        this.product_name = product.getName();
+        this.productName = product.getName();
         this.type = product.getType();
         this.brand = product.getBrand();
         this.color = product.getColor();
@@ -30,12 +30,12 @@ public class Detail {
         this.product_id = product_id;
     }
 
-    public String getProduct_name() {
-        return product_name;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setProduct_name(String product_name) {
-        this.product_name = product_name;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public String getType() {

@@ -4,31 +4,31 @@ import com.melidh.desafiospring.domain.User;
 
 public class BaseUserDTO {
 
-    private Integer id;
-    private String username;
+    private Integer userId;
+    private String userName;
 
     public BaseUserDTO(){
 
     }
 
     public BaseUserDTO(User user){
-        this.id = user.getId();
-        this.username = user.getUsername();
+        this.userId = user.getId();
+        this.userName = user.getUsername();
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

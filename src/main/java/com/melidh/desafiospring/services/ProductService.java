@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +36,7 @@ public class ProductService {
         Post post = new Post();
 
         try {
-            User user = userService.findById(postDTO.getUser_id());
+            User user = userService.findById(postDTO.getUserId());
 
             post.setDate(formatter.parse(postDTO.getDate()));
             post.setProduct(product);
@@ -50,15 +52,26 @@ public class ProductService {
 
     }
 
-    public UserPostsDTO findAllRecentPosts(Integer userId) {
+    public UserPostsDTO findAllRecentPosts(Integer userId, String orderBy) {
         User user = userService.findById(userId);
         List<Integer> following_ids = user.getFollowing().stream().map(u -> u.getId()).collect(Collectors.toList());
         List<Post> posts = postService.findRecentPosts(following_ids);
+        sortByDate(posts, orderBy);
 
         UserPostsDTO userPostsDTO = new UserPostsDTO();
         userPostsDTO.setUserId(userId);
         userPostsDTO.getPosts().addAll(posts.stream().map(p -> new PostDTO(p)).collect(Collectors.toList()));
 
         return userPostsDTO;
+    }
+
+    private void sortByDate(List<Post> posts, String orderBy){
+        String[] order = orderBy.split("_");
+
+        if (order[1].equals("asc")) {
+            Collections.sort(posts, Comparator.comparing(Post::getDate));
+        } else {
+            Collections.sort(posts, Comparator.comparing(Post::getDate).reversed());
+        }
     }
 }

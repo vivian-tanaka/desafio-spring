@@ -4,7 +4,6 @@ import com.melidh.desafiospring.domain.User;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class UserFollowersDTO extends BaseUserDTO{
 

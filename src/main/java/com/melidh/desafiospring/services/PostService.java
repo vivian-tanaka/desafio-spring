@@ -14,7 +14,7 @@ public class PostService {
     @Autowired
     private PostRepository postRepository;
 
-    private final Integer POST_AGE = -7;
+    private final Integer POST_AGE = -14;
 
     public void save(Post post){
         postRepository.save(post);
